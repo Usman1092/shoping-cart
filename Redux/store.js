@@ -24,7 +24,9 @@ import { rootReducer } from './rootReducer';
 
 const isClient = typeof window !== 'undefined';
 
-export const store = createStore(
+export  const store = createStore(
   rootReducer,
   isClient && window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 );
+
+export default store;

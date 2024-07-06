@@ -1,7 +1,7 @@
 // Products.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../pages/Redux/Cart/Actions/index';
+import { addToCart } from '../../Redux/Cart/Actions/index';
 
 const ProductDetails = ({ productInfo }) => {
   const dispatch = useDispatch();

@@ -139,7 +139,7 @@
 
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../Redux/Cart/Actions";
+import { addToCart } from "../../Redux/Cart/Actions";
 
 const ProductDetails = ({ productInfo }) => {
   const dispatch = useDispatch();
