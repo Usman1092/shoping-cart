@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
-// import config from "./postcss.config.mjs";
+
 export function middleware(req) {
+  const token = req.cookies.get("authToken");
 
-//   if (req.nextUrl.pathname!="/Login") {
-    return NextResponse.redirect(new URL("/Login", req.url));
-//   }
+  if (!token) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // If token is present, proceed to the requested route
+  return NextResponse.next();
 }
 
-export const config={
-matcher:"/products/:path+"
-}
+export const config = {
+  matcher: "/products/:path+",
+};

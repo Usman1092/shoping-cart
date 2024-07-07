@@ -56,6 +56,15 @@ const ShoppingCart = () => {
           {cartItems.map((item) => (
             <div key={item.id} className="p-4 border-b border-gray-300">
               <div className="flex flex-row justify-between text-left">
+                <div class="max-w-sm p-6 ml-10 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                  <img
+                    src={item.images}
+                    width={200}
+                    height={200}
+                    alt="Product Image"
+                  />
+                </div>
+
                 <div className="flex flex-col">
                   <h2 className="text-xl font-semibold">{item.title}</h2>
                   <p>ID: {item.id}</p>
