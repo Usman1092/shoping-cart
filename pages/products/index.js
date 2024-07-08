@@ -43,7 +43,7 @@ function Products({ initialData }) {
         <h2 className="text-center text-4xl font-bold ">Products</h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {data.products.map((product) => (
+          {data && data.products && data.products.map((product) => (
             <div key={product.id} className="group relative">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <Link href={`/products/${product.id}`}>
@@ -91,11 +91,11 @@ function Products({ initialData }) {
           <button
             className="bg-[#429def] pt-2 pb-2 pl-2 pr-2 rounded text-white"
             onClick={() => {
-              if (!isPlaceholderData && data.total > (page + 1) * 10) {
+              if (!isPlaceholderData &&data && data.total > (page + 1) * 10) {
                 setPage((old) => old + 1);
               }
             }}
-            disabled={isPlaceholderData || data.total <= (page + 1) * 10}
+            disabled={isPlaceholderData || data && data.total <= (page + 1) * 10}
           >
             Next Page
           </button>
