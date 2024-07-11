@@ -158,8 +158,13 @@
 
 // export default Login;
 
+
+
+
+
+
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider, facebookAuth, fbauthprovider } from "../config";
 import { useRouter } from "next/router";
 import nookies from "nookies"; // Library for handling cookies
@@ -175,9 +180,10 @@ function Login() {
   const createUser = (e) => {
     e.preventDefault();
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const token = await userCredential.user.getIdToken();
+        console.log(token);
         nookies.set(undefined, "authToken", token, { path: "/" });
         Swal.fire({
           title: "success",
@@ -187,8 +193,9 @@ function Login() {
         });
 
         setTimeout(() => {
+          const id = localStorage.getItem("Id");
           setLoading(true);
-          router.push("/products"); // Redirect to products page after successful login
+          router.push(`/products/${id}`); // Redirect to specific product ID page after successful login
         }, 3000);
       })
       .catch((error) => {
@@ -215,8 +222,9 @@ function Login() {
         });
 
         setTimeout(() => {
+          const id = localStorage.getItem("Id");
           setLoading(true);
-          router.push("/products"); // Redirect to products page after successful login
+          router.push(`/products/${id}`); // Redirect to specific product ID page after successful login
         }, 3000);
       })
       .catch((error) => {
@@ -242,8 +250,9 @@ function Login() {
         });
 
         setTimeout(() => {
+          const id = localStorage.getItem("Id");
           setLoading(true);
-          router.push("/products"); // Redirect to products page after successful login
+          router.push(`/products/${id}`); // Redirect to specific product ID page after successful login
         }, 3000);
       })
       .catch((error) => {
@@ -375,7 +384,7 @@ function Login() {
                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <a
-                    href="#"
+                    href="/SignUp"
                     class="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Sign up

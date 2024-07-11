@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware(req) {
   const token = req.cookies.get("authToken");
+ 
 
   if (!token) {
     return NextResponse.redirect(new URL("/", req.url));
@@ -12,5 +13,7 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: "/products/:path+",
+  matcher: "/ShoppingCart/:path+",
 };
+
+

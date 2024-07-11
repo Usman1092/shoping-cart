@@ -137,30 +137,43 @@
 
 // export default ProductDetails;
 
-import React, { useEffect } from "react";
+
+
+
+
+
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/Cart/Actions";
 import Swal from "sweetalert2";
 import Link from "next/link";
-
+import nookies from "nookies";
 
 const ProductDetails = ({ productInfo }) => {
+  localStorage.setItem("Id", productInfo.id);
   const dispatch = useDispatch();
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = nookies.get(null, "authToken");
+    console.log(token);
+    if (token.authToken) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   if (!productInfo) return <h1>Loading...</h1>;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     console.log("Dispatching add to cart:", productInfo);
     dispatch(addToCart(productInfo));
-    // alert("Item successfully added to Cart");
     Swal.fire({
-      title: "success",
+      title: "Success",
       text: "Item Successfully Added to Cart!",
       icon: "success",
       confirmButtonText: "Continue",
     });
-    
   };
 
   return (
@@ -182,18 +195,29 @@ const ProductDetails = ({ productInfo }) => {
               <span className="text-3xl font-bold text-gray-900 dark:text-white">
                 ${productInfo.price}
               </span>
-              <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                onClick={handleAddToCart}
-              >
-                Add to cart
-              </button>
-             
-             
-              
+              {isLoggedIn ? (
+                <button
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={handleAddToCart}
+                >
+                  Add to cart
+                </button>
+              ) : (
+                <Link href="/Login" legacyBehavior>
+                  <a className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Login to Add to Cart
+                  </a>
+                </Link>
+              )}
             </div>
-            <div className="text-end mt-10"> <Link href={"/ShoppingCart"}  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  Go to cart</Link></div>
+            <div className="text-end mt-10">
+              <Link href="/ShoppingCart" legacyBehavior>
+                <a className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Go to cart
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -245,6 +269,7 @@ export const getServerSideProps = async (context) => {
 
   try {
     const response = await fetch(`https://dummyjson.com/products/${id}`);
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
