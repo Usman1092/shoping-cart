@@ -91,7 +91,7 @@ function Products({ initialData }) {
           <button
             className="bg-[#429def] pt-2 pb-2 pl-2 pr-2 rounded text-white"
             onClick={() => {
-              if (!isPlaceholderData &&data && data.total > (page + 1) * 10) {
+              if (!isPlaceholderData && data && data.total > (page + 1) * 10) {
                 setPage((old) => old + 1);
               }
             }}

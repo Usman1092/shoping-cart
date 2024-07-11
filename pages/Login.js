@@ -163,25 +163,43 @@ import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider, facebookAuth, fbauthprovider } from "../config";
 import { useRouter } from "next/router";
 import nookies from "nookies"; // Library for handling cookies
+import Swal from "sweetalert2";
+import { ColorRing } from "react-loader-spinner";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const createUser = (e) => {
     e.preventDefault();
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const token = await userCredential.user.getIdToken();
         nookies.set(undefined, "authToken", token, { path: "/" });
-        alert("Successfully created user");
-        router.push("/products"); // Redirect to products page after successful login
+        Swal.fire({
+          title: "success",
+          text: "User Login Successfully!",
+          icon: "success",
+          confirmButtonText: "Continue",
+        });
+
+        setTimeout(() => {
+          setLoading(true);
+          router.push("/products"); // Redirect to products page after successful login
+        }, 3000);
       })
       .catch((error) => {
-        console.error("Error creating user:", error);
-        alert("Error creating user: " + error.message);
+        Swal.fire({
+          title: "Error!",
+          text: "Error Logging in with Email" + error.message,
+          icon: "error",
+          confirmButtonText: "close",
+        });
       });
+    setLoading(false);
   };
 
   const handleClick = () => {
@@ -189,11 +207,25 @@ function Login() {
       .then(async (data) => {
         const token = await data.user.getIdToken();
         nookies.set(undefined, "authToken", token, { path: "/" });
-        router.push("/products"); // Redirect to products page after successful login
+        Swal.fire({
+          title: "success",
+          text: "User Login Successfully With Google!",
+          icon: "success",
+          confirmButtonText: "Continue",
+        });
+
+        setTimeout(() => {
+          setLoading(true);
+          router.push("/products"); // Redirect to products page after successful login
+        }, 3000);
       })
       .catch((error) => {
-        console.error("Error signing in with Google:", error);
-        alert("Error signing in with Google: " + error.message);
+        Swal.fire({
+          title: "Error!",
+          text: "Error Logging in with Google" + error.message,
+          icon: "error",
+          confirmButtonText: "close",
+        });
       });
   };
 
@@ -202,11 +234,25 @@ function Login() {
       .then(async (fbdata) => {
         const token = await fbdata.user.getIdToken();
         nookies.set(undefined, "authToken", token, { path: "/" });
-        router.push("/products"); // Redirect to products page after successful login
+        Swal.fire({
+          title: "success",
+          text: "User Login Successfully with Facebook!",
+          icon: "success",
+          confirmButtonText: "Continue",
+        });
+
+        setTimeout(() => {
+          setLoading(true);
+          router.push("/products"); // Redirect to products page after successful login
+        }, 3000);
       })
       .catch((error) => {
-        console.error("Error signing in with Facebook:", error);
-        alert("Error signing in with Facebook: " + error.message);
+        Swal.fire({
+          title: "Error!",
+          text: "Error Logging in with Facebook" + error.message,
+          icon: "error",
+          confirmButtonText: "close",
+        });
       });
   };
 
@@ -220,7 +266,7 @@ function Login() {
               <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
-              <form class="space-y-4 md:space-y-6" onSubmit={createUser}>
+              <form class="space-y-4 md:space-y-6">
                 <div>
                   <label
                     for="email"
@@ -285,24 +331,46 @@ function Login() {
                   </a>
                 </div>
                 <button
-                  type="submit"
+                  type="button"
                   class="w-full text-white bg-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  onClick={createUser}
+                  disabled={loading}
                 >
-                  Sign in
+                  {loading ? (
+                    <ColorRing
+                      visible={true}
+                      height="40"
+                      width="40"
+                      ariaLabel="color-ring-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="color-ring-wrapper"
+                      colors={[
+                        "#e15b64",
+                        "#f47e60",
+                        "#f8b26a",
+                        "#abbd81",
+                        "#849b87",
+                      ]}
+                    />
+                  ) : (
+                    "Sign in"
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={handleClick}
                   class="w-full text-white bg-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  disabled={loading}
                 >
-                  Sign in With Google
+                  Sign in With Google Account
                 </button>
                 <button
                   type="button"
                   onClick={facebookAuthBtn}
                   class="w-full text-white bg-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  disabled={loading}
                 >
-                  Sign in With Facebook
+                  Sign in With Facebook Account
                 </button>
                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}

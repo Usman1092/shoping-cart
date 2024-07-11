@@ -140,17 +140,27 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Redux/Cart/Actions";
+import Swal from "sweetalert2";
+import Link from "next/link";
+
 
 const ProductDetails = ({ productInfo }) => {
   const dispatch = useDispatch();
-
+  
   if (!productInfo) return <h1>Loading...</h1>;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     console.log("Dispatching add to cart:", productInfo);
     dispatch(addToCart(productInfo));
-    alert("Item successfully added to Cart");
+    // alert("Item successfully added to Cart");
+    Swal.fire({
+      title: "success",
+      text: "Item Successfully Added to Cart!",
+      icon: "success",
+      confirmButtonText: "Continue",
+    });
+    
   };
 
   return (
@@ -179,7 +189,11 @@ const ProductDetails = ({ productInfo }) => {
               >
                 Add to cart
               </button>
+             
+             
+              
             </div>
+            <div className="text-end mt-10"> <Link href={"/ShoppingCart"}  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  Go to cart</Link></div>
           </div>
         </div>
 
