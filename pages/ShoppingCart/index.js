@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeItem } from "../../Redux/Cart/Actions";
 import nookies from "nookies";
 import Link from "next/link";
+import { handleIncrement } from "./QuantityHelpers/handleIncrement";
+import { handleDecrement } from "./QuantityHelpers/handleDecrement";
+import {calculateTotalPrice} from  './CalculateTotal/TotalPrice';
+
 
 const ShoppingCart = () => {
   const cartItems = useSelector((state) => state.operations.items);
@@ -25,36 +29,8 @@ const ShoppingCart = () => {
     }
   }, [cartItems]);
 
-  const handleIncrement = (itemId) => {
-    setQuantities((prevQuantities) => {
-      const newQuantities = {
-        ...prevQuantities,
-        [itemId]: (prevQuantities[itemId] || 1) + 1,
-      };
-      localStorage.setItem("quantities", JSON.stringify(newQuantities));
-      return newQuantities;
-    });
-  };
 
-  const handleDecrement = (itemId) => {
-    setQuantities((prevQuantities) => {
-      const newQuantities = {
-        ...prevQuantities,
-        [itemId]: prevQuantities[itemId] > 1 ? prevQuantities[itemId] - 1 : 1,
-      };
-      localStorage.setItem("quantities", JSON.stringify(newQuantities));
-      return newQuantities;
-    });
-  };
-
-  const calculateTotalPrice = (items, quantities) => {
-    return items.reduce((acc, item) => {
-      const quantity = quantities[item.id] || 1;
-      return acc + item.price * quantity;
-    }, 0);
-  };
-
-  const totalPrice = calculateTotalPrice(cartItems, quantities).toFixed(2);
+   const totalPrice = calculateTotalPrice(cartItems, quantities).toFixed(2);
 
   return (
     <div className="min-h-screen">
@@ -91,7 +67,7 @@ const ShoppingCart = () => {
                     <p className="">Quantity:</p>
                     <button
                       type="button"
-                      onClick={() => handleDecrement(item.id)}
+                      onClick={() => handleDecrement(item.id,setQuantities)}
                       className="bg-black rounded-[10%] pt-2 pb-2 pl-2 pr-2 text-white font-bold"
                     >
                       -
@@ -99,7 +75,7 @@ const ShoppingCart = () => {
                     <span className="text-lg">{quantities[item.id] || 1}</span>
                     <button
                       type="button"
-                      onClick={() => handleIncrement(item.id)}
+                     onClick={()=>handleIncrement(item.id, setQuantities)}  
                       className="bg-black rounded-[10%] pt-2 pb-2 pl-2 pr-2 text-white font-bold"
                     >
                       +
@@ -137,3 +113,9 @@ const ShoppingCart = () => {
 };
 
 export default ShoppingCart;
+
+
+
+
+
+
