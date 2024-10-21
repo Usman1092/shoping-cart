@@ -21,7 +21,7 @@
 //2nd FINAL CODE
 import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import 'lenis/dist/lenis.css'
+
 import { store } from "../Redux/store";
 import { Provider } from "react-redux";
 import dynamic from "next/dynamic";

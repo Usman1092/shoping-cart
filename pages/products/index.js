@@ -2,7 +2,7 @@ import Link from "next/link";
 import React,{useRef,useEffect} from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Lenis from "lenis";
+// import Lenis from "lenis";
 
 
 
@@ -28,44 +28,44 @@ export const getServerSideProps = async () => {
 
 function Products({ initialData }) {
   const [page, setPage] = React.useState(0);
-  const lenisRef = useRef(null);
-  useEffect(() => {
-    // Initialize Lenis
-    const lenis = new Lenis({
+  // const lenisRef = useRef(null);
+  // useEffect(() => {
+  //   // Initialize Lenis
+  //   const lenis = new Lenis({
     
-      duration: 1.2, // Animation duration (default 1.2)
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function (default)
-      direction: "horizontal", // Scroll direction (vertical or horizontal)
-      smooth: true, // Enable smooth scrolling (default true)
-      smoothTouch: false, // Enable smooth scrolling on touch devices (default false)
-      touchMultiplier: 2, // Multiply the scroll speed on touch devices (default 2)
-      // infinite:true,
-      smoothWheel:true,
-      wheelMultiplier:0.1,
-      direction:1
+  //     duration: 1.2, // Animation duration (default 1.2)
+  //     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function (default)
+  //     direction: "horizontal", // Scroll direction (vertical or horizontal)
+  //     smooth: true, // Enable smooth scrolling (default true)
+  //     smoothTouch: false, // Enable smooth scrolling on touch devices (default false)
+  //     touchMultiplier: 2, // Multiply the scroll speed on touch devices (default 2)
+  //     // infinite:true,
+  //     smoothWheel:true,
+  //     wheelMultiplier:0.1,
+  //     direction:1
       
-    });
-    // lenis.on('scroll', (e) => {
-    //   console.log(e)
-    // })
-    lenis.on('scroll', ({scroll,limit,velocity, direction,progress}) => {
-      console.log({scroll,limit,velocity, direction,progress})
-    })
+  //   });
+  //   // lenis.on('scroll', (e) => {
+  //   //   console.log(e)
+  //   // })
+  //   lenis.on('scroll', ({scroll,limit,velocity, direction,progress}) => {
+  //     console.log({scroll,limit,velocity, direction,progress})
+  //   })
 
-    lenisRef.current = lenis;
+  //   lenisRef.current = lenis;
 
-    // Start the scroll animation
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
+  //   // Start the scroll animation
+  //   const raf = (time) => {
+  //     lenis.raf(time);
+  //     requestAnimationFrame(raf);
+  //   };
 
-    requestAnimationFrame(raf);
+  //   requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
+  //   return () => {
+  //     lenis.destroy();
+  //   };
+  // }, []);
 
 
   const { error, data, isFetching, isPlaceholderData } = useQuery({
